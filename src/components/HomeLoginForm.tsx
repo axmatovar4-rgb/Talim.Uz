@@ -131,25 +131,6 @@ export default function HomeLoginForm() {
           <>Kirish →</>
         )}
       </button>
-
-      {/* Demo hint */}
-      <div className="p-3 bg-gray-50 rounded-xl border border-gray-100">
-        <p className="text-xs font-semibold text-gray-500 mb-1.5">Demo hisoblar:</p>
-        <div className="space-y-1 text-xs text-gray-400">
-          <p
-            className="cursor-pointer hover:text-gray-700 transition-colors"
-            onClick={() => { setEmail("student@talim.uz"); setPassword("password123"); }}
-          >
-            👤 student@talim.uz / password123
-          </p>
-          <p
-            className="cursor-pointer hover:text-gray-700 transition-colors"
-            onClick={() => { setEmail("teacher@talim.uz"); setPassword("password123"); }}
-          >
-            👨‍🏫 teacher@talim.uz / password123
-          </p>
-        </div>
-      </div>
     </form>
   );
 }

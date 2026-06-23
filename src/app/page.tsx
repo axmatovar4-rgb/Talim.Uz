@@ -193,14 +193,14 @@ export default async function HomePage() {
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { n:"01", title:"Akademiyaga kirish", desc:"Admin sizga shaxsiy login beradi va yo'nalishingizni belgilaydi" },
-              { n:"02", title:"Video darsni ko'rish", desc:"Har qadam — 10-15 daqiqalik tushuntirili video. 95% ko'rish shart" },
-              { n:"03", title:"Amaliyot", desc:"Maxsus topshiriq orqali o'rgangan bilimingizni amalda ko'rsating" },
-              { n:"04", title:"Mentor sinovi", desc:"Mentor sizni 4 ta mezon bo'yicha sinab, 100 ball shkala baholaydi" },
-              { n:"05", title:"Tasdiq kod olish", desc:"85+ ball olsangiz AI sizga Talim.Uz tasdiq kodi beradi", dark:true },
-              { n:"06", title:"Saytga kiritish", desc:"Kodni sayt input maydoniga kiriting — server xavfsiz tekshiradi", dark:false },
-              { n:"07", title:"Shaxsiy rivojlanish", desc:"Asosiy qadamdan keyin PD topshig'i ochiladi" },
-              { n:"08", title:"Keyingi qadam ochiladi", desc:"Reyting oshadi, yangi qadam ochiladi — yo'l davom etadi", dark:true },
+              { n:"01", title:"Ro'yxatdan o'tish", desc:"Emailingiz va parolingizni belgilab, bir daqiqada hisob yarating" },
+              { n:"02", title:"Yo'nalish tanlash", desc:"7 ta yo'nalishdan birini tanlang va bir martalik to'lov qiling" },
+              { n:"03", title:"Video darslarni ko'ring", desc:"Har bir dars 10-15 daqiqalik tushuntirili video. Istalgan vaqtda" },
+              { n:"04", title:"Amaliyot bajaring", desc:"Har darsdan keyin topshiriq — bilimingizni mustahkamlang" },
+              { n:"05", title:"Boshlovchi sertifikat", desc:"10 ta darsni tugating — Boshlovchi sertifikatini oling", dark:true },
+              { n:"06", title:"O'rta daraja", desc:"20 ta dars — O'rta daraja sertifikati sizniki", dark:false },
+              { n:"07", title:"Yuqori daraja", desc:"35 ta darsni yakunlang — Yuqori daraja sertifikatini qo'lga kiriting" },
+              { n:"08", title:"Master sertifikat", desc:"50 ta darsni tugatgan o'quvchiga Master sertifikati beriladi", dark:true },
             ].map((item)=>(
               <div key={item.n} className={`rounded-2xl p-5 relative overflow-hidden ${item.dark?"bg-gray-900 text-white":"bg-gray-50 border border-gray-100 text-gray-800"}`}>
                 <p className={`text-xs font-bold tracking-widest mb-3 ${item.dark?"text-gray-400":"text-gray-400"}`}>
@@ -250,7 +250,7 @@ export default async function HomePage() {
           <div className="bg-gray-950 rounded-3xl p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center gap-10">
             <div className="flex-1">
               <span className="text-xs font-bold tracking-widest text-green-400 flex items-center gap-1 mb-5">
-                ● YANGI GURUH OCHIQ · 2026
+                ● BUGUN BOSHLANG · 2026
               </span>
               <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-4">
                 Birinchi qadam<br />
@@ -258,11 +258,11 @@ export default async function HomePage() {
                 Ertangi kasbingiz <span className="text-indigo-400">shu yerda.</span>
               </h2>
               <p className="text-gray-400 mb-8 max-w-sm">
-                Faqat taklif orqali kirish. Joylar cheklangan — admin bilan bog'laning va o'z o'mingizni band qiling.
+                Ro'yxatdan o'ting, yo'nalishingizni tanlang va darhol o'qishni boshlang. Hamma narsa sizning qo'lingizda.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link href="/register" className="bg-white text-gray-900 px-7 py-3.5 rounded-full font-bold hover:bg-gray-100 transition-colors flex items-center gap-2">
-                  Akademiyaga kirish →
+                  Bepul ro'yxatdan o'tish →
                 </Link>
                 <Link href="/courses" className="border border-gray-700 text-gray-300 px-7 py-3.5 rounded-full font-medium hover:border-gray-500 transition-colors">
                   Kurslarni ko'rish
@@ -270,11 +270,11 @@ export default async function HomePage() {
               </div>
             </div>
             <div className="w-full md:w-72 bg-gray-900 rounded-2xl p-5 flex-shrink-0">
-              <p className="text-xs text-gray-500 font-bold tracking-widest mb-4">QO'SHILISH — 3 QADAM · <span className="text-gray-600">-24 SOAT</span></p>
+              <p className="text-xs text-gray-500 font-bold tracking-widest mb-4">BOSHLASH — 3 QADAM</p>
               {[
-                { n:"01", t:"Admin bilan bog'laning", d:"Telegram orqali yo'nalish va guruh haqida ma'lumot oling" },
-                { n:"02", t:"Yo'nalishni tanlang", d:"Dasturlash · Dizayn · Marketing — uchtasidan biri" },
-                { n:"03", t:"Loginni qabul qiling", d:"24 soat ichida shaxsiy hisob va birinchi qadam ochiq" },
+                { n:"01", t:"Ro'yxatdan o'ting", d:"Email va parol bilan bir daqiqada hisob yarating" },
+                { n:"02", t:"Yo'nalishni tanlang", d:"Ona tili · Matematika · Ingliz tili · Dasturlash va boshqalar" },
+                { n:"03", t:"O'qishni boshlang", d:"To'lov qilib, barcha video darslarga kirish oling" },
               ].map((s)=>(
                 <div key={s.n} className="flex gap-3 mb-4 last:mb-0">
                   <span className="text-xs text-gray-600 font-bold w-5 flex-shrink-0 pt-0.5">{s.n}</span>
@@ -285,7 +285,7 @@ export default async function HomePage() {
                 </div>
               ))}
               <div className="mt-5 pt-4 border-t border-gray-800 text-xs text-gray-600 tracking-widest">
-                {stats.courses} KURS · 3 YO'NALISH · 1 YANGI KASB
+                {stats.courses} KURS · 7 YO'NALISH · 1 MARTALIK TO'LOV
               </div>
             </div>
           </div>

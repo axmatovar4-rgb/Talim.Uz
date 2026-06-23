@@ -252,7 +252,7 @@ export default function ProfilePage() {
                 ))}
               </div>
               <p className="text-xs text-indigo-400 bg-indigo-50 rounded-lg p-3 mt-4">
-                Login, parol, ism yoki yo'nalishni o'zgartirish — faqat admin orqali. Iltimos, o'qituvchi yoki ma'muriyatga murojaat qiling.
+                Hisob ma'lumotlarini o'zgartirish uchun sozlamalar bo'limiga o'ting yoki qayta ro'yxatdan o'ting.
               </p>
             </div>
           </div>

@@ -83,15 +83,6 @@ export default function LoginPage() {
               Ro'yxatdan o'ting
             </Link>
           </p>
-
-          {/* Demo accounts */}
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <p className="text-xs font-medium text-gray-600 mb-2">Demo hisoblar:</p>
-            <div className="space-y-1 text-xs text-gray-500">
-              <p>👤 Talaba: student@talim.uz / password123</p>
-              <p>👨‍🏫 O'qituvchi: teacher@talim.uz / password123</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
