@@ -170,7 +170,7 @@ export default function HomePageClient({ stats }: { stats: Stats }) {
                     ))}
                   </div>
                   <div className="text-sm font-bold text-yellow-400 mb-3">
-                    {stats.courses * 25}+ qadam · 4 bo'lim
+                    30+ video · 4 bo'lim
                   </div>
                   <div className="flex gap-1 mb-5">
                     {[...Array(12)].map((_,i)=>(
