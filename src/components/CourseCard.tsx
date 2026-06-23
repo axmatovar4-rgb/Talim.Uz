@@ -15,10 +15,11 @@ interface CourseCardProps {
 
 export default function CourseCard({ course }: CourseCardProps) {
   return (
-    <Link href={`/courses/${course.id}`} className="block">
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow overflow-hidden group">
+    <Link href={`/courses/${course.id}`} className="block group">
+      <div className="bg-white rounded-2xl overflow-hidden transition-all hover:shadow-md"
+        style={{ border: "1.5px solid #E2E8F0" }}>
         {/* Thumbnail */}
-        <div className="h-44 bg-gradient-to-br from-blue-400 to-blue-600 relative overflow-hidden">
+        <div className="h-44 relative overflow-hidden" style={{ backgroundColor: "#EEF2FF" }}>
           {course.thumbnail ? (
             <img
               src={course.thumbnail}
@@ -27,47 +28,52 @@ export default function CourseCard({ course }: CourseCardProps) {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <div className="text-white text-5xl opacity-40">📚</div>
+              <div className="text-5xl opacity-30">📚</div>
             </div>
           )}
           {course.category && (
-            <span className="absolute top-3 left-3 bg-white/90 text-blue-700 text-xs font-semibold px-2 py-1 rounded-full">
+            <span className="absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full"
+              style={{ backgroundColor: "white", color: "#4F46E5" }}>
               {course.category.name}
             </span>
           )}
           {course.price === 0 && (
-            <span className="absolute top-3 right-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+            <span className="absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded-full"
+              style={{ backgroundColor: "#16a34a", color: "white" }}>
               BEPUL
             </span>
           )}
         </div>
 
         {/* Content */}
-        <div className="p-4">
-          <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 group-hover:text-blue-600 transition-colors">
+        <div className="p-5">
+          <h3 className="font-semibold mb-1 line-clamp-2 group-hover:text-indigo-600 transition-colors"
+            style={{ color: "#0F172A" }}>
             {course.title}
           </h3>
-          <p className="text-gray-500 text-sm mb-3 line-clamp-2">{course.description}</p>
+          <p className="text-sm mb-3 line-clamp-2" style={{ color: "#64748B" }}>
+            {course.description}
+          </p>
 
-          <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
+          <div className="flex items-center gap-3 text-xs mb-3" style={{ color: "#94A3B8" }}>
             <span>👤 {course.teacher.name}</span>
-            <span>•</span>
+            <span>·</span>
             <span>📹 {course._count.lessons} dars</span>
-            <span>•</span>
-            <span>🎓 {course._count.enrollments} talaba</span>
+            <span>·</span>
+            <span>🎓 {course._count.enrollments}</span>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pt-3" style={{ borderTop: "1px solid #F1F5F9" }}>
             <div className="font-bold text-lg">
               {course.price === 0 ? (
-                <span className="text-green-600">Bepul</span>
+                <span style={{ color: "#16a34a" }}>Bepul</span>
               ) : (
-                <span className="text-gray-900">
+                <span style={{ color: "#0F172A" }}>
                   {course.price.toLocaleString("uz-UZ")} so'm
                 </span>
               )}
             </div>
-            <span className="text-blue-600 text-sm font-medium group-hover:underline">
+            <span className="text-sm font-medium group-hover:underline" style={{ color: "#4F46E5" }}>
               Batafsil →
             </span>
           </div>

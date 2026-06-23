@@ -39,13 +39,13 @@ function RegisterForm() {
 
   return (
     <div className="w-full max-w-md">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+      <div className="rounded-2xl p-8" style={{ backgroundColor: "white", border: "1.5px solid #E2E8F0" }}>
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: "#0F172A" }}>
             <span className="text-white font-bold text-xl">T</span>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Ro'yxatdan o'tish</h1>
-          <p className="text-gray-500 mt-1">Talim.Uz ga xush kelibsiz</p>
+          <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>Ro'yxatdan o'tish</h1>
+          <p className="mt-1" style={{ color: "#94A3B8" }}>Talim.Uz ga xush kelibsiz</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -124,7 +124,8 @@ function RegisterForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-60 mt-2"
+            className="w-full text-white py-3 rounded-lg font-semibold transition-colors disabled:opacity-60 mt-2"
+            style={{ backgroundColor: "#0F172A" }}
           >
             {loading ? "Ro'yxatdan o'tilmoqda..." : "Ro'yxatdan o'tish"}
           </button>
@@ -143,8 +144,8 @@ function RegisterForm() {
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 bg-gray-50 py-10">
-      <Suspense fallback={<div className="text-gray-500">Yuklanmoqda...</div>}>
+    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-10" style={{ backgroundColor: "#FAFAF7" }}>
+      <Suspense fallback={<div style={{ color: "#94A3B8" }}>Yuklanmoqda...</div>}>
         <RegisterForm />
       </Suspense>
     </div>
