@@ -16,22 +16,22 @@ async function getStats() {
 export default async function HomePage() {
   const stats = await getStats();
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{backgroundColor:"#FAFAF7"}}>
       {/* ── NAVBAR ── */}
-      <header className="flex items-center justify-between px-8 py-5 border-b border-gray-100 sticky top-0 bg-white z-50">
+      <header className="flex items-center justify-between px-8 py-5 border-b sticky top-0 z-50" style={{backgroundColor:"#FAFAF7", borderColor:"#E2E8F0"}}>
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{backgroundColor:"#0F172A"}}>
             <span className="text-white text-xs font-bold">T</span>
           </div>
-          <span className="font-semibold text-gray-900 text-lg">Talim<span className="text-gray-400">.Uz</span></span>
+          <span className="font-semibold text-lg" style={{color:"#0F172A"}}>Talim<span style={{color:"#94A3B8"}}>.Uz</span></span>
         </div>
-        <nav className="hidden md:flex items-center gap-8 text-sm text-gray-500">
+        <nav className="hidden md:flex items-center gap-8 text-sm" style={{color:"#475569"}}>
           <Link href="/courses" className="hover:text-gray-900 transition-colors">Yo'nalishlar</Link>
           <Link href="#roadmap" className="hover:text-gray-900 transition-colors">Yo'l xaritasi</Link>
           <Link href="#reviews" className="hover:text-gray-900 transition-colors">Sharhlar</Link>
           <Link href="#faq" className="hover:text-gray-900 transition-colors">Tez-tez so'raladi</Link>
         </nav>
-        <Link href="/login" className="bg-black text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
+        <Link href="/login" className="text-white px-5 py-2 rounded-full text-sm font-medium transition-colors" style={{backgroundColor:"#0F172A"}}>
           Kirish
         </Link>
       </header>
@@ -41,28 +41,28 @@ export default async function HomePage() {
         {/* LEFT */}
         <div className="flex-1 flex flex-col justify-center px-10 lg:px-16 py-12 relative overflow-hidden">
           <div className="flex items-center gap-2 mb-6">
-            <div className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center text-xs">🎓</div>
-            <span className="text-sm text-gray-500 font-medium">TALIM.UZ AKADEMIYASI</span>
-            <span className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-medium">● {stats.users} o'quvchi faol</span>
+            <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs" style={{backgroundColor:"#EEF2FF"}}>🎓</div>
+            <span className="text-sm font-medium" style={{color:"#475569"}}>TALIM.UZ AKADEMIYASI</span>
+            <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{color:"#16a34a", backgroundColor:"#f0fdf4"}}>● {stats.users} o'quvchi faol</span>
           </div>
-          <h1 className="text-5xl lg:text-6xl font-black text-gray-900 leading-tight mb-6">
-            Online ta'lim<br /><span className="text-gray-400">yangi bosqichda.</span>
+          <h1 className="text-5xl lg:text-6xl font-black leading-tight mb-6" style={{color:"#0F172A"}}>
+            Online ta'lim<br /><span style={{color:"#94A3B8"}}>yangi bosqichda.</span>
           </h1>
-          <p className="text-gray-500 text-lg leading-relaxed max-w-md mb-8">
+          <p className="text-lg leading-relaxed max-w-md mb-8" style={{color:"#475569"}}>
             {stats.courses}+ kurs, mentor bilan amaliyot. Har qadam — video, suhbat, baholash va sertifikat.
           </p>
           <div className="flex items-center gap-2 mb-8">
-            <div className="bg-gray-900 text-green-400 text-xs px-4 py-2 rounded-lg font-mono flex items-center gap-2">
-              <span className="text-gray-500">$</span><span>talim</span>
-              <span className="text-gray-500">--track</span>
-              <span className="text-yellow-400">dasturlash|dizayn|marketing</span>
+            <div className="text-xs px-4 py-2 rounded-lg font-mono flex items-center gap-2" style={{backgroundColor:"#1E293B", color:"#4ade80"}}>
+              <span style={{color:"#64748b"}}>$</span><span>talim</span>
+              <span style={{color:"#64748b"}}>--track</span>
+              <span style={{color:"#fbbf24"}}>dasturlash|dizayn|marketing</span>
             </div>
           </div>
           <div className="flex items-center gap-3 mb-10">
-            <Link href="/login" className="bg-black text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition-colors">
+            <Link href="/login" className="text-white px-6 py-3 rounded-full font-semibold transition-colors" style={{backgroundColor:"#0F172A"}}>
               Akademiyaga kirish →
             </Link>
-            <Link href="/courses" className="border border-gray-200 text-gray-700 px-6 py-3 rounded-full font-semibold hover:border-gray-400 transition-colors">
+            <Link href="/courses" className="px-6 py-3 rounded-full font-semibold transition-colors" style={{border:"1.5px solid #CBD5E1", color:"#475569"}}>
               Yo'nalishlar
             </Link>
           </div>
@@ -74,9 +74,9 @@ export default async function HomePage() {
                 </div>
               ))}
             </div>
-            <span className="text-yellow-400 text-sm">★★★★★</span>
-            <span className="font-bold text-gray-900 text-sm">4.9</span>
-            <span className="text-gray-400 text-sm">{stats.enrollments}+ faol o'quvchi</span>
+            <span className="text-sm" style={{color:"#f59e0b"}}>★★★★★</span>
+            <span className="font-bold text-sm" style={{color:"#0F172A"}}>4.9</span>
+            <span className="text-sm" style={{color:"#94A3B8"}}>{stats.enrollments}+ faol o'quvchi</span>
           </div>
           {/* Brain SVG */}
           <div className="absolute right-4 top-1/2 -translate-y-1/2 w-56 h-56 lg:w-72 lg:h-72 opacity-80 pointer-events-none select-none">
@@ -111,22 +111,22 @@ export default async function HomePage() {
           </div>
         </div>
         {/* RIGHT — login */}
-        <div className="w-full lg:w-[420px] flex-shrink-0 flex flex-col justify-center px-10 py-12 border-l border-gray-100">
-          <div className="text-sm text-gray-400 mb-8">
+        <div className="w-full lg:w-[420px] flex-shrink-0 flex flex-col justify-center px-10 py-12" style={{borderLeft:"1.5px solid #E2E8F0", backgroundColor:"#FFFFFF"}}>
+          <div className="text-sm mb-8" style={{color:"#94A3B8"}}>
             <Link href="/courses" className="hover:text-gray-700 transition-colors">· Kurslar</Link>
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-1">
-            Akademiyaga <span className="text-indigo-500">kirish</span>
+          <h2 className="text-3xl font-bold mb-1" style={{color:"#0F172A"}}>
+            Akademiyaga <span style={{color:"#4F46E5"}}>kirish</span>
           </h2>
-          <p className="text-gray-400 text-sm mb-8">Shaxsiy hisobingizga kiring va o'qishni davom eting.</p>
+          <p className="text-sm mb-8" style={{color:"#94A3B8"}}>Shaxsiy hisobingizga kiring va o'qishni davom eting.</p>
           <HomeLoginForm />
-          <div className="mt-5 text-center text-sm text-gray-300">yoki</div>
-          <Link href="/register" className="mt-4 w-full flex items-center justify-center gap-2 border border-gray-200 text-gray-600 py-3 rounded-xl text-sm font-medium hover:border-gray-400 hover:text-gray-900 transition-colors">
-            ✦ Boshqa usulda kirish
+          <div className="mt-5 text-center text-sm" style={{color:"#CBD5E1"}}>yoki</div>
+          <Link href="/register" className="mt-4 w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-colors" style={{border:"1.5px solid #E2E8F0", color:"#475569"}}>
+            ✦ Ro'yxatdan o'tish
           </Link>
-          <p className="text-center text-xs text-gray-400 mt-6">
+          <p className="text-center text-xs mt-6" style={{color:"#94A3B8"}}>
             Muammo bormi?{" "}
-            <Link href="/register" className="text-indigo-500 hover:underline">Admin bilan bog'laning</Link>
+            <Link href="/register" className="hover:underline" style={{color:"#4F46E5"}}>Biz bilan bog'laning</Link>
           </p>
         </div>
       </div>
@@ -135,13 +135,13 @@ export default async function HomePage() {
       <TickerBar />
 
       {/* ── YO'NALISHLAR ── */}
-      <section className="bg-[#f5f5f0] py-20 px-8">
+      <section className="py-20 px-8" style={{backgroundColor:"#F3F3EE"}}>
         <div className="max-w-6xl mx-auto">
-          <p className="text-center text-sm text-gray-400 mb-3">3 ta yo'nalish</p>
-          <h2 className="text-4xl font-black text-gray-900 text-center mb-2">
-            O'zingizning <span className="text-indigo-500">o'qish yo'lingiz</span>
+          <p className="text-center text-sm mb-3" style={{color:"#94A3B8"}}>3 ta yo'nalish</p>
+          <h2 className="text-4xl font-black text-center mb-2" style={{color:"#0F172A"}}>
+            O'zingizning <span style={{color:"#4F46E5"}}>o'qish yo'lingiz</span>
           </h2>
-          <p className="text-center text-gray-400 mb-12 max-w-lg mx-auto">
+          <p className="text-center mb-12 max-w-lg mx-auto" style={{color:"#475569"}}>
             Har yo'nalish kurslardan iborat. Yo'nalishingizni tanlaydi, siz esa o'z sur'atingizda bosib o'tasiz.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -182,13 +182,13 @@ export default async function HomePage() {
       </section>
 
       {/* ── YO'L XARITASI ── */}
-      <section id="roadmap" className="py-20 px-8 bg-white">
+      <section id="roadmap" className="py-20 px-8" style={{backgroundColor:"#FFFFFF"}}>
         <div className="max-w-6xl mx-auto">
-          <p className="text-center text-sm text-gray-400 mb-3">Yo'l xaritasi</p>
-          <h2 className="text-4xl font-black text-gray-900 text-center mb-3">
-            Bir qadam — bir <span className="text-indigo-500">tajriba</span>
+          <p className="text-center text-sm mb-3" style={{color:"#94A3B8"}}>Yo'l xaritasi</p>
+          <h2 className="text-4xl font-black text-center mb-3" style={{color:"#0F172A"}}>
+            Bir qadam — bir <span style={{color:"#4F46E5"}}>tajriba</span>
           </h2>
-          <p className="text-center text-gray-400 mb-14 max-w-lg mx-auto">
+          <p className="text-center mb-14 max-w-lg mx-auto" style={{color:"#475569"}}>
             Har bir qadam shu 8 bosqichdan o'tadi. Tartibli, izchil, mukammal.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -202,13 +202,17 @@ export default async function HomePage() {
               { n:"07", title:"Yuqori daraja", desc:"35 ta darsni yakunlang — Yuqori daraja sertifikatini qo'lga kiriting" },
               { n:"08", title:"Master sertifikat", desc:"50 ta darsni tugatgan o'quvchiga Master sertifikati beriladi", dark:true },
             ].map((item)=>(
-              <div key={item.n} className={`rounded-2xl p-5 relative overflow-hidden ${item.dark?"bg-gray-900 text-white":"bg-gray-50 border border-gray-100 text-gray-800"}`}>
-                <p className={`text-xs font-bold tracking-widest mb-3 ${item.dark?"text-gray-400":"text-gray-400"}`}>
+              <div key={item.n} className="rounded-2xl p-5 relative overflow-hidden"
+                style={{
+                  backgroundColor: item.dark ? "#0F172A" : "#F8FAFC",
+                  border: item.dark ? "none" : "1.5px solid #E2E8F0"
+                }}>
+                <p className="text-xs font-bold tracking-widest mb-3" style={{color: item.dark ? "#475569" : "#94A3B8"}}>
                   BOSQICH {item.n}
                 </p>
-                <h4 className={`font-bold text-base mb-2 ${item.dark?"text-white":"text-gray-900"}`}>{item.title}</h4>
-                <p className={`text-sm leading-relaxed ${item.dark?"text-gray-400":"text-gray-500"}`}>{item.desc}</p>
-                <div className={`absolute bottom-4 right-4 text-6xl font-black opacity-10 ${item.dark?"text-white":"text-gray-300"}`}>{item.n}</div>
+                <h4 className="font-bold text-base mb-2" style={{color: item.dark ? "#F8FAFC" : "#0F172A"}}>{item.title}</h4>
+                <p className="text-sm leading-relaxed" style={{color: item.dark ? "#64748B" : "#475569"}}>{item.desc}</p>
+                <div className="absolute bottom-4 right-4 text-6xl font-black opacity-10" style={{color: item.dark ? "#fff" : "#CBD5E1"}}>{item.n}</div>
               </div>
             ))}
           </div>
@@ -234,11 +238,11 @@ export default async function HomePage() {
       </section>
 
       {/* ── SHARHLAR ── */}
-      <section id="reviews" className="py-20 px-8 bg-[#f5f5f0]">
+      <section id="reviews" className="py-20 px-8" style={{backgroundColor:"#F3F3EE"}}>
         <div className="max-w-6xl mx-auto">
-          <p className="text-center text-sm text-gray-400 mb-3">Sharhlar</p>
-          <h2 className="text-4xl font-black text-gray-900 text-center mb-14">
-            O'quvchilar <span className="text-indigo-500">nima deydi</span>
+          <p className="text-center text-sm mb-3" style={{color:"#94A3B8"}}>Sharhlar</p>
+          <h2 className="text-4xl font-black text-center mb-14" style={{color:"#0F172A"}}>
+            O'quvchilar <span style={{color:"#4F46E5"}}>nima deydi</span>
           </h2>
           <Testimonials />
         </div>
@@ -293,17 +297,17 @@ export default async function HomePage() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="bg-white border-t border-gray-100 py-14 px-8">
+      <footer className="py-14 px-8" style={{backgroundColor:"#FFFFFF", borderTop:"1.5px solid #E2E8F0"}}>
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-7 h-7 bg-black rounded-full flex items-center justify-center">
+              <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{backgroundColor:"#0F172A"}}>
                 <span className="text-white text-xs font-bold">T</span>
               </div>
-              <span className="font-bold text-gray-900">Talim<span className="text-gray-400">.Uz</span></span>
+              <span className="font-bold" style={{color:"#0F172A"}}>Talim<span style={{color:"#94A3B8"}}>.Uz</span></span>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              O'zbekistonning onlayn ta'lim akademiyasi. {stats.courses}+ kurs · 3 yo'nalish · 1 maqsad.
+            <p className="text-sm leading-relaxed" style={{color:"#475569"}}>
+              O'zbekistonning onlayn ta'lim akademiyasi. {stats.courses}+ kurs · 7 yo'nalish · 1 maqsad.
             </p>
           </div>
           {[
@@ -312,20 +316,20 @@ export default async function HomePage() {
             { title:"ALOQA", links:[["Telegram","#"],["Instagram","#"],["Email","#"]] },
           ].map((col)=>(
             <div key={col.title}>
-              <p className="text-xs font-bold tracking-widest text-gray-400 mb-4">{col.title}</p>
+              <p className="text-xs font-bold tracking-widest mb-4" style={{color:"#94A3B8"}}>{col.title}</p>
               <ul className="space-y-2">
                 {col.links.map(([label,href])=>(
                   <li key={label}>
-                    <Link href={href} className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{label}</Link>
+                    <Link href={href} className="text-sm hover:text-gray-900 transition-colors" style={{color:"#475569"}}>{label}</Link>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-        <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-2">
-          <p className="text-xs text-gray-400">© 2026 Talim.Uz Akademiyasi. Barcha huquqlar himoyalangan.</p>
-          <p className="text-xs text-gray-400">Toshkent · O'zbekiston</p>
+        <div className="max-w-6xl mx-auto mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-2" style={{borderTop:"1px solid #E2E8F0"}}>
+          <p className="text-xs" style={{color:"#94A3B8"}}>© 2026 Talim.Uz Akademiyasi. Barcha huquqlar himoyalangan.</p>
+          <p className="text-xs" style={{color:"#94A3B8"}}>Toshkent · O'zbekiston</p>
         </div>
       </footer>
     </div>

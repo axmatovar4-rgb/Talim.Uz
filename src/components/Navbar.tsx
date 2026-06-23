@@ -14,22 +14,22 @@ export default function Navbar() {
   if (pathname === "/") return null;
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+    <nav className="bg-white border-b sticky top-0 z-50" style={{borderColor:"#E2E8F0"}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{backgroundColor:"#0F172A"}}>
               <span className="text-white font-bold text-sm">T</span>
             </div>
-            <span className="font-bold text-xl text-gray-900">
-              Talim<span className="text-blue-600">.Uz</span>
+            <span className="font-bold text-xl" style={{color:"#0F172A"}}>
+              Talim<span style={{color:"#94A3B8"}}>.Uz</span>
             </span>
           </Link>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-6">
-            <Link href="/courses" className="text-gray-600 hover:text-blue-600 transition-colors">
+            <Link href="/courses" className="transition-colors text-sm" style={{color:"#475569"}}>
               Kurslar
             </Link>
             {!loading && (
@@ -38,33 +38,31 @@ export default function Navbar() {
                   <>
                     <Link
                       href={user.role === "teacher" ? "/dashboard/teacher" : "/dashboard/student"}
-                      className="text-gray-600 hover:text-blue-600 transition-colors"
+                      className="transition-colors text-sm" style={{color:"#475569"}}
                     >
                       Dashboard
                     </Link>
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span className="text-blue-600 font-semibold text-sm">
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{backgroundColor:"#EEF2FF"}}>
+                        <span className="font-semibold text-sm" style={{color:"#4F46E5"}}>
                           {user.name[0].toUpperCase()}
                         </span>
                       </div>
-                      <span className="text-gray-700 text-sm">{user.name}</span>
-                      <button
-                        onClick={logout}
-                        className="text-sm text-gray-500 hover:text-red-500 transition-colors"
-                      >
+                      <span className="text-sm" style={{color:"#0F172A"}}>{user.name}</span>
+                      <button onClick={logout} className="text-sm transition-colors" style={{color:"#94A3B8"}}>
                         Chiqish
                       </button>
                     </div>
                   </>
                 ) : (
                   <>
-                    <Link href="/login" className="text-gray-600 hover:text-blue-600 transition-colors">
+                    <Link href="/login" className="text-sm transition-colors" style={{color:"#475569"}}>
                       Kirish
                     </Link>
                     <Link
                       href="/register"
-                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                      className="text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                      style={{backgroundColor:"#4F46E5"}}
                     >
                       Ro'yxatdan o'tish
                     </Link>

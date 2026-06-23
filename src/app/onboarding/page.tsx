@@ -82,7 +82,7 @@ export default function OnboardingPage() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 py-12">
         {step === "select" && (
           <>
             <div className="text-center mb-10">
@@ -90,8 +90,8 @@ export default function OnboardingPage() {
               <p className="text-gray-400">Bir martalik to'lov bilan barcha video darslarga kirish oling</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {courses.map(course => (
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+              {courses.slice(0, 5).map(course => (
                 <button
                   key={course.id}
                   onClick={() => setSelected(course.id)}
@@ -121,6 +121,49 @@ export default function OnboardingPage() {
                   <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
                     <span className="text-xs text-gray-400">📹 {course._count.lessons} video dars</span>
                     <span className="font-bold text-gray-900">
+                      {course.price === 0 ? (
+                        <span className="text-green-600">Bepul</span>
+                      ) : (
+                        `${course.price.toLocaleString("uz-UZ")} so'm`
+                      )}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            {/* 2-qator: 5 ta kurs */}
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+              {courses.slice(5, 10).map(course => (
+                <button
+                  key={course.id}
+                  onClick={() => setSelected(course.id)}
+                  className={`text-left rounded-2xl border-2 p-5 transition-all ${
+                    selected === course.id
+                      ? "border-indigo-500 bg-indigo-50 shadow-md"
+                      : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm"
+                  }`}
+                >
+                  <div className="text-3xl mb-3">
+                    {ICONS[course.category?.name || ""] || "📚"}
+                  </div>
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <h3 className="font-bold text-gray-900 text-sm">{course.title}</h3>
+                    {selected === course.id && (
+                      <div className="w-5 h-5 bg-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                          <path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                  {course.category && (
+                    <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{course.category.name}</span>
+                  )}
+                  <p className="text-xs text-gray-500 mt-2 line-clamp-2">{course.description}</p>
+                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+                    <span className="text-xs text-gray-400">📹 {course._count.lessons}</span>
+                    <span className="font-bold text-xs text-gray-900">
                       {course.price === 0 ? (
                         <span className="text-green-600">Bepul</span>
                       ) : (

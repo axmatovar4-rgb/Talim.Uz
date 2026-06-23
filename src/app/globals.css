@@ -4,6 +4,22 @@
   box-sizing: border-box;
 }
 
+:root {
+  --bg-primary: #FAFAF7;
+  --bg-secondary: #F3F3EE;
+  --navy: #0F172A;
+  --navy-soft: #1E293B;
+  --accent: #4F46E5;
+  --accent-soft: #EEF2FF;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --border: #E2E8F0;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
 }

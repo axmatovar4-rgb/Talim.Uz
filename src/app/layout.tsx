@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="uz">
-      <body className="bg-white min-h-screen">
+      <body className="min-h-screen" style={{backgroundColor:"#FAFAF7"}}>
         <AuthProvider>
           <Navbar />
           <main>{children}</main>
