@@ -1,23 +1,26 @@
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 import bcrypt from "bcryptjs";
-import path from "path";
 
-const dbPath = path.resolve(process.cwd(), "dev.db");
-const adapter = new PrismaBetterSqlite3({ url: `file:${dbPath}` });
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+});
+const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
   // Categories
   const categories = await Promise.all([
-    prisma.category.upsert({ where: { name: "Ona tili" },     update: {}, create: { name: "Ona tili" } }),
-    prisma.category.upsert({ where: { name: "Matematika" },   update: {}, create: { name: "Matematika" } }),
-    prisma.category.upsert({ where: { name: "Ingliz tili" },  update: {}, create: { name: "Ingliz tili" } }),
-    prisma.category.upsert({ where: { name: "Rus tili" },     update: {}, create: { name: "Rus tili" } }),
-    prisma.category.upsert({ where: { name: "Dasturlash" },   update: {}, create: { name: "Dasturlash" } }),
-    prisma.category.upsert({ where: { name: "Marketing" },    update: {}, create: { name: "Marketing" } }),
-    prisma.category.upsert({ where: { name: "Dizayn" },       update: {}, create: { name: "Dizayn" } }),
+    prisma.category.upsert({ where: { name: "Ona tili" },    update: {}, create: { name: "Ona tili" } }),
+    prisma.category.upsert({ where: { name: "Matematika" },  update: {}, create: { name: "Matematika" } }),
+    prisma.category.upsert({ where: { name: "Ingliz tili" }, update: {}, create: { name: "Ingliz tili" } }),
+    prisma.category.upsert({ where: { name: "Rus tili" },    update: {}, create: { name: "Rus tili" } }),
+    prisma.category.upsert({ where: { name: "Dasturlash" },  update: {}, create: { name: "Dasturlash" } }),
+    prisma.category.upsert({ where: { name: "Marketing" },   update: {}, create: { name: "Marketing" } }),
+    prisma.category.upsert({ where: { name: "Dizayn" },      update: {}, create: { name: "Dizayn" } }),
   ]);
 
   // Teacher
@@ -57,14 +60,17 @@ async function main() {
   });
 
   // Courses
-  const course1 = await prisma.course.create({
-    data: {
+  await prisma.course.upsert({
+    where: { id: "course-js-001" },
+    update: {},
+    create: {
+      id: "course-js-001",
       title: "JavaScript asoslari",
       description: "JavaScript dasturlash tilini noldan o'rganing. O'zgaruvchilar, funksiyalar, DOM va asinxron dasturlash.",
       price: 0,
       isPublished: true,
       teacherId: teacher.id,
-      categoryId: categories[0].id,
+      categoryId: categories[4].id,
       lessons: {
         create: [
           { title: "JavaScript nima?", position: 1, isFree: true, duration: 600 },
@@ -77,14 +83,17 @@ async function main() {
     },
   });
 
-  await prisma.course.create({
-    data: {
+  await prisma.course.upsert({
+    where: { id: "course-react-002" },
+    update: {},
+    create: {
+      id: "course-react-002",
       title: "React.js praktikasi",
-      description: "React.js frameworkini o'rganib, zamonaviy web ilovalar yarating. Komponentlar, hooks, va state management.",
+      description: "React.js frameworkini o'rganib, zamonaviy web ilovalar yarating.",
       price: 99000,
       isPublished: true,
       teacherId: teacher.id,
-      categoryId: categories[0].id,
+      categoryId: categories[4].id,
       lessons: {
         create: [
           { title: "React nima va nima uchun?", position: 1, isFree: true, duration: 720 },
@@ -96,14 +105,17 @@ async function main() {
     },
   });
 
-  await prisma.course.create({
-    data: {
+  await prisma.course.upsert({
+    where: { id: "course-design-003" },
+    update: {},
+    create: {
+      id: "course-design-003",
       title: "UI/UX Dizayn asoslari",
       description: "Figma yordamida professional interfeys va foydalanuvchi tajribasini loyihalashni o'rganing.",
       price: 149000,
       isPublished: true,
       teacherId: teacher.id,
-      categoryId: categories[1].id,
+      categoryId: categories[6].id,
       lessons: {
         create: [
           { title: "Dizayn tamoyillari", position: 1, isFree: true, duration: 660 },
@@ -114,14 +126,17 @@ async function main() {
     },
   });
 
-  await prisma.course.create({
-    data: {
+  await prisma.course.upsert({
+    where: { id: "course-english-004" },
+    update: {},
+    create: {
+      id: "course-english-004",
       title: "Ingliz tili B1 dan B2 gacha",
       description: "O'rta darajadan yuqori darajaga chiqing. Grammatika, so'zlashuv va yozish ko'nikmalari.",
       price: 79000,
       isPublished: true,
       teacherId: teacher.id,
-      categoryId: categories[4].id,
+      categoryId: categories[2].id,
       lessons: {
         create: [
           { title: "Present tenses takrorlash", position: 1, isFree: true, duration: 780 },
