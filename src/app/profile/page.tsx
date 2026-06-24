@@ -7,21 +7,14 @@ import Link from "next/link";
 import { CERT_LEVELS, getEarnedCerts, getCurrentLevel } from "@/lib/certificates";
 
 interface Enrollment {
-  id: string;
-  progress: number;
-  createdAt: string;
+  id: string; progress: number;
   course: { id: string; title: string; category?: { name: string } | null; _count: { lessons: number } };
-}
-interface Payment {
-  id: string; amount: number; createdAt: string;
-  course: { id: string; title: string };
 }
 
 export default function ProfilePage() {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
-  const [payments, setPayments] = useState<Payment[]>([]);
   const [totalCompleted, setTotalCompleted] = useState(0);
   const [fetching, setFetching] = useState(true);
 
@@ -31,251 +24,169 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!user) return;
-    Promise.all([
-      fetch("/api/dashboard/student").then(r => r.json()),
-      fetch("/api/payment").then(r => r.json()),
-    ]).then(([dash, pays]) => {
-      setEnrollments(dash.enrollments || []);
-      setPayments(Array.isArray(pays) ? pays : []);
-      // Completed lessons count (from progress)
-      const completed = (dash.enrollments || []).reduce(
-        (acc: number, e: Enrollment) => acc + Math.round((e.progress / 100) * e.course._count.lessons), 0
-      );
-      setTotalCompleted(completed);
-    }).finally(() => setFetching(false));
+    fetch("/api/dashboard/student")
+      .then(r => r.json())
+      .then(d => {
+        setEnrollments(d.enrollments || []);
+        const done = (d.enrollments || []).reduce(
+          (acc: number, e: Enrollment) => acc + Math.round((e.progress / 100) * e.course._count.lessons), 0
+        );
+        setTotalCompleted(done);
+      })
+      .finally(() => setFetching(false));
   }, [user]);
 
   const earnedCerts = getEarnedCerts(totalCompleted);
   const currentLevel = getCurrentLevel(totalCompleted);
-  const joinDate = new Date().toLocaleDateString("uz-UZ");
-
-  // Level progress bar
-  const levelNames = ["Yangi boshlovchi", "Boshlang'ich", "O'rta daraja", "Yuqori daraja", "Master"];
-  const levelIdx = earnedCerts.length;
-  const levelPct = Math.min(100, (levelIdx / 4) * 100);
+  const levelPct = Math.min(100, Math.round((totalCompleted / 50) * 100));
 
   if (loading || fetching) return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+    <div className="flex items-center justify-center min-h-[80vh]">
+      <div className="w-8 h-8 border-4 border-t-transparent rounded-full animate-spin"
+        style={{ borderColor: "#E2E8F0", borderTopColor: "#4F46E5" }} />
     </div>
   );
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
-      {/* SIDEBAR */}
-      <aside className="w-64 bg-white border-r border-gray-100 flex flex-col flex-shrink-0">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-black rounded-full flex items-center justify-center">
-              <span className="text-white text-xs font-bold">T</span>
-            </div>
-            <span className="font-bold text-sm text-gray-900">Talim.Uz</span>
-          </Link>
-        </div>
-        <nav className="flex-1 px-3 py-4 space-y-1">
-          <Link href="/dashboard/student" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 hover:bg-gray-50">
-            <span>🏠</span> Boshqaruv paneli
-          </Link>
-          <Link href="/onboarding" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 hover:bg-gray-50">
-            <span>📹</span> Darslar
-          </Link>
-          <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-indigo-50 text-indigo-700">
-            <span>👤</span> Profil
-          </div>
-        </nav>
-        <div className="px-4 py-3 border-t border-gray-100">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-7 h-7 bg-indigo-100 rounded-full flex items-center justify-center text-xs font-bold text-indigo-600">
+    <div className="min-h-screen" style={{ backgroundColor: "#FAFAF7" }}>
+      <div className="max-w-4xl mx-auto px-4 py-10 space-y-5">
+
+        {/* Profile hero */}
+        <div className="rounded-2xl p-6 flex items-center justify-between"
+          style={{ background: "linear-gradient(135deg,#4f46e5,#7c3aed)" }}>
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-black text-white"
+              style={{ backgroundColor: "rgba(255,255,255,0.2)" }}>
               {user?.name?.[0]?.toUpperCase()}
             </div>
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-gray-800 truncate">{user?.name}</p>
-              <p className="text-xs text-gray-400">{totalCompleted} dars tugatildi</p>
+            <div>
+              <p className="text-xs text-white/60 font-semibold tracking-widest mb-0.5">
+                {user?.role === "teacher" ? "O'QITUVCHI" : user?.role === "admin" ? "ADMIN" : "TALABA"}
+              </p>
+              <h2 className="text-xl font-black text-white">{user?.name}</h2>
+              <p className="text-white/60 text-sm">{user?.email}</p>
             </div>
           </div>
-        </div>
-        <button onClick={() => logout()}
-          className="mx-4 mb-4 flex items-center gap-2 text-xs text-gray-400 hover:text-gray-700 transition-colors">
-          <span>→</span> Chiqish
-        </button>
-      </aside>
-
-      {/* MAIN */}
-      <div className="flex-1 overflow-y-auto">
-        {/* Header */}
-        <div className="bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between sticky top-0 z-10">
-          <div>
-            <h1 className="font-bold text-gray-900">Mening profilim</h1>
+          <div className="text-right hidden sm:block">
+            <div className="text-3xl font-black text-white">{levelPct}%</div>
+            <p className="text-xs text-white/60">umumiy jarayon</p>
           </div>
-          {enrollments[0]?.course?.category && (
-            <span className="text-xs bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full font-semibold">
-              {enrollments[0].course.category.name}
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { label: "Bajarilgan", value: `${totalCompleted}/50`, color: "#4F46E5", bg: "#EEF2FF" },
+            { label: "Kurslar", value: enrollments.length, color: "#D97706", bg: "#FFFBEB" },
+            { label: "Sertifikatlar", value: earnedCerts.length, color: "#7C3AED", bg: "#F5F3FF" },
+            { label: "Daraja", value: earnedCerts.length > 0 ? earnedCerts[earnedCerts.length - 1].emoji : "🌱", color: "#16a34a", bg: "#F0FDF4" },
+          ].map(s => (
+            <div key={s.label} className="rounded-xl p-4" style={{ backgroundColor: s.bg }}>
+              <div className="text-2xl font-black" style={{ color: s.color }}>{s.value}</div>
+              <div className="text-xs mt-0.5" style={{ color: s.color }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Daraja progress */}
+        <div className="bg-white rounded-2xl p-5" style={{ border: "1.5px solid #E2E8F0" }}>
+          <div className="flex justify-between items-center mb-3">
+            <p className="text-sm font-bold" style={{ color: "#0F172A" }}>Mening darajam</p>
+            <span className="text-xs px-2 py-1 rounded-full font-bold"
+              style={{ backgroundColor: "#EEF2FF", color: "#4F46E5" }}>
+              {currentLevel}
             </span>
-          )}
+          </div>
+          <div className="h-2.5 rounded-full overflow-hidden mb-2" style={{ backgroundColor: "#F1F5F9" }}>
+            <div className="h-full rounded-full transition-all"
+              style={{ width: `${levelPct}%`, background: "linear-gradient(90deg,#6366f1,#8b5cf6)" }} />
+          </div>
+          <div className="flex justify-between text-xs" style={{ color: "#94A3B8" }}>
+            <span>Yangi boshlovchi</span>
+            <span>Boshlang'ich</span>
+            <span>O'rta</span>
+            <span>Yuqori</span>
+            <span>Master</span>
+          </div>
         </div>
 
-        <div className="max-w-4xl mx-auto px-6 py-6 space-y-5">
-          {/* Profile hero */}
-          <div className="rounded-2xl p-6 flex items-center justify-between" style={{ background: "linear-gradient(135deg,#4f46e5,#7c3aed)" }}>
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-3xl font-black text-white">
-                {user?.name?.[0]?.toUpperCase()}-
-              </div>
-              <div>
-                <p className="text-xs text-white/60 font-semibold tracking-widest mb-1">
-                  {enrollments[0]?.course?.category?.name?.toUpperCase() || "TALABA"} · O'QUVCHI
-                </p>
-                <h2 className="text-2xl font-black text-white">{user?.name}</h2>
-                <p className="text-white/60 text-sm mt-0.5">@{user?.email?.split("@")[0]} · {joinDate} qo'shilgan</p>
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="w-20 h-20 rounded-full border-4 border-white/30 flex items-center justify-center">
-                <div className="text-center">
-                  <p className="text-2xl font-black text-white">{levelPct}%</p>
-                  <p className="text-xs text-white/60">SUR'AT</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Stats row */}
+        {/* Yutuqlar */}
+        <div className="bg-white rounded-2xl p-5" style={{ border: "1.5px solid #E2E8F0" }}>
+          <p className="text-sm font-bold mb-4" style={{ color: "#0F172A" }}>Yutuqlar</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {[
-              { label: "BAJARILGAN", value: `${totalCompleted}/50`, sub: `${Math.round(totalCompleted/50*100)}% umumiy`, color: "text-blue-600" },
-              { label: "KURSLAR", value: enrollments.length, sub: "yozilgan", color: "text-orange-500" },
-              { label: "SERTIFIKATLAR", value: earnedCerts.length, sub: "olingan", color: "text-purple-600" },
-              { label: "TO'LOVLAR", value: payments.length, sub: "marta", color: "text-green-600" },
-            ].map(s => (
-              <div key={s.label} className="bg-white rounded-xl border border-gray-100 p-4">
-                <p className="text-xs text-gray-400 font-bold tracking-widest mb-1">{s.label}</p>
-                <p className={`text-2xl font-black ${s.color}`}>{s.value}</p>
-                <p className="text-xs text-gray-400">{s.sub}</p>
-              </div>
-            ))}
+            {CERT_LEVELS.map(cert => {
+              const earned = totalCompleted >= cert.required;
+              return (
+                <div key={cert.id} className="rounded-xl p-4 text-center"
+                  style={{
+                    backgroundColor: earned ? cert.bg : "#F8FAFC",
+                    border: `1.5px solid ${earned ? cert.color + "40" : "#E2E8F0"}`,
+                    opacity: earned ? 1 : 0.6
+                  }}>
+                  <div className="text-2xl mb-1">{earned ? cert.icon : "🔒"}</div>
+                  <p className="text-xs font-bold" style={{ color: earned ? cert.color : "#94A3B8" }}>
+                    {cert.subtitle}
+                  </p>
+                  <p className="text-xs mt-0.5" style={{ color: "#94A3B8" }}>
+                    {earned ? "Olindi ✓" : `${cert.required} dars`}
+                  </p>
+                </div>
+              );
+            })}
           </div>
+        </div>
 
-          {/* Level progress */}
-          <div className="bg-white rounded-xl border border-gray-100 p-5">
-            <div className="flex justify-between items-center mb-3">
-              <p className="text-sm font-bold text-gray-700">MENING DARAJAM</p>
-              <span className="text-xs bg-indigo-100 text-indigo-600 px-2 py-1 rounded-full font-bold">
-                {earnedCerts.length > 0 ? earnedCerts[earnedCerts.length-1].icon : "🌱"} {currentLevel}
-              </span>
+        {/* Kurslar */}
+        {enrollments.length > 0 && (
+          <div className="bg-white rounded-2xl p-5" style={{ border: "1.5px solid #E2E8F0" }}>
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-sm font-bold" style={{ color: "#0F172A" }}>Kurslarim</p>
+              <Link href="/onboarding" className="text-xs" style={{ color: "#4F46E5" }}>+ Yangi</Link>
             </div>
-            <div className="relative h-3 bg-gray-100 rounded-full overflow-hidden mb-3">
-              <div className="h-full rounded-full transition-all" style={{
-                width: `${(totalCompleted / 50) * 100}%`,
-                background: "linear-gradient(90deg, #6366f1, #8b5cf6)"
-              }} />
-            </div>
-            <div className="flex justify-between text-xs text-gray-400">
-              {levelNames.map((name, i) => (
-                <span key={name} className={i <= levelIdx ? "text-indigo-500 font-semibold" : ""}>{name}</span>
+            <div className="space-y-3">
+              {enrollments.map(e => (
+                <Link key={e.id} href={`/learn/${e.course.id}`}
+                  className="flex items-center gap-3 p-3 rounded-xl hover:shadow-sm transition-all"
+                  style={{ border: "1px solid #F1F5F9" }}>
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white flex-shrink-0"
+                    style={{ backgroundColor: "#4F46E5" }}>
+                    {e.course.title[0]}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate" style={{ color: "#0F172A" }}>{e.course.title}</p>
+                    <p className="text-xs" style={{ color: "#94A3B8" }}>{e.course._count.lessons} dars · {e.progress}%</p>
+                  </div>
+                  <span className="text-xs" style={{ color: "#94A3B8" }}>→</span>
+                </Link>
               ))}
             </div>
           </div>
+        )}
 
-          {/* Badges */}
-          <div className="bg-white rounded-xl border border-gray-100 p-5">
-            <p className="text-sm font-bold text-gray-700 mb-1">YUTUQLAR</p>
-            <p className="text-xs text-gray-400 mb-4">Yo'l davomida olingan belgilar</p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {CERT_LEVELS.map(cert => {
-                const earned = totalCompleted >= cert.required;
-                return (
-                  <div key={cert.id} className={`rounded-xl p-4 text-center transition-all ${earned ? "border border-gray-100" : "border border-dashed border-gray-200 opacity-50"}`}
-                    style={{ backgroundColor: earned ? cert.bg : "#f9fafb" }}>
-                    <div className="text-3xl mb-2">{earned ? cert.icon : "🔒"}</div>
-                    <p className="text-xs font-bold" style={{ color: earned ? cert.color : "#9ca3af" }}>
-                      {cert.subtitle}
-                    </p>
-                    <p className="text-xs text-gray-400 mt-0.5">
-                      {earned ? "Olindi" : `${cert.required} dars`}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Recent lessons + Account info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Enrolled courses */}
-            <div className="bg-white rounded-xl border border-gray-100 p-5">
-              <div className="flex justify-between items-center mb-4">
-                <p className="text-sm font-bold text-gray-700">KURSLARIM</p>
-                <Link href="/onboarding" className="text-xs text-indigo-500 hover:underline">Barchasi →</Link>
+        {/* Hisob */}
+        <div className="bg-white rounded-2xl p-5" style={{ border: "1.5px solid #E2E8F0" }}>
+          <p className="text-sm font-bold mb-4" style={{ color: "#0F172A" }}>Hisob ma'lumotlari</p>
+          <div className="space-y-3">
+            {[
+              { label: "Ism", value: user?.name },
+              { label: "Email", value: user?.email },
+              { label: "Rol", value: user?.role === "teacher" ? "O'qituvchi" : user?.role === "admin" ? "Admin" : "Talaba" },
+            ].map(item => (
+              <div key={item.label} className="flex justify-between items-center py-2"
+                style={{ borderBottom: "1px solid #F1F5F9" }}>
+                <span className="text-sm" style={{ color: "#94A3B8" }}>{item.label}</span>
+                <span className="text-sm font-medium" style={{ color: "#0F172A" }}>{item.value}</span>
               </div>
-              {enrollments.length === 0 ? (
-                <p className="text-sm text-gray-400">Hali kurs yo'q</p>
-              ) : (
-                <div className="space-y-3">
-                  {enrollments.slice(0, 4).map(e => (
-                    <Link key={e.id} href={`/learn/${e.course.id}`}
-                      className="flex items-center gap-3 hover:bg-gray-50 rounded-lg p-1 transition-colors">
-                      <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center text-xs font-bold text-indigo-600 flex-shrink-0">
-                        {e.course.title[0]}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-800 truncate">{e.course.title}</p>
-                        <p className="text-xs text-gray-400">{e.course._count.lessons} dars</p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Account info */}
-            <div className="bg-white rounded-xl border border-gray-100 p-5">
-              <p className="text-sm font-bold text-gray-700 mb-1">HISOB MA'LUMOTLARI</p>
-              <p className="text-xs text-gray-400 mb-4">Faqat ko'rish uchun</p>
-              <div className="space-y-3">
-                {[
-                  { icon: "👤", label: "Ism va familiya", value: user?.name },
-                  { icon: "📧", label: "Email", value: user?.email },
-                  { icon: "🔵", label: "Holat", value: "Faol", badge: true },
-                  { icon: "🎭", label: "Rol", value: user?.role === "teacher" ? "O'qituvchi" : "O'quvchi" },
-                ].map(item => (
-                  <div key={item.label} className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                      <span>{item.icon}</span>
-                      <span>{item.label}</span>
-                    </div>
-                    {item.badge ? (
-                      <span className="text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded-full font-semibold">Faol</span>
-                    ) : (
-                      <span className="text-sm font-medium text-gray-800">{item.value}</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-              <p className="text-xs text-indigo-400 bg-indigo-50 rounded-lg p-3 mt-4">
-                Hisob ma'lumotlarini o'zgartirish uchun sozlamalar bo'limiga o'ting yoki qayta ro'yxatdan o'ting.
-              </p>
-            </div>
-          </div>
-
-          {/* Danger */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gray-50 rounded-xl border border-gray-200 p-4 flex items-center gap-3">
-              <span className="text-2xl">⚙️</span>
-              <div>
-                <p className="text-sm font-semibold text-gray-700">Mavzu</p>
-                <p className="text-xs text-gray-400">Yorug' rejim yoqlgan</p>
-              </div>
-            </div>
-            <button onClick={() => logout()}
-              className="bg-red-50 rounded-xl border border-red-200 p-4 flex items-center gap-3 hover:bg-red-100 transition-colors text-left">
-              <span className="text-2xl">🚪</span>
-              <div>
-                <p className="text-sm font-semibold text-red-600">Hisobdan chiqish</p>
-                <p className="text-xs text-red-400">Joriy sessiyani tugatish</p>
-              </div>
-            </button>
+            ))}
           </div>
         </div>
+
+        {/* Chiqish */}
+        <button onClick={logout}
+          className="w-full py-3 rounded-xl text-sm font-semibold transition-colors"
+          style={{ backgroundColor: "#FEF2F2", color: "#DC2626", border: "1.5px solid #FECACA" }}>
+          Hisobdan chiqish
+        </button>
       </div>
     </div>
   );
