@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import TickerBar from "./TickerBar";
-import Testimonials from "./Testimonials";
+import TickerBar from "@/components/TickerBar";
+import Testimonials from "@/components/Testimonials";
 import LoginModal from "./LoginModal";
 
 interface Stats {
