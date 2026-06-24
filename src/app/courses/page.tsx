@@ -11,6 +11,8 @@ const ICONS: Record<string, string> = {
   "Dizayn": "🎨",
 };
 
+export const dynamic = "force-dynamic";
+
 async function getCourses(categoryId?: string, search?: string) {
   return prisma.course.findMany({
     where: {
