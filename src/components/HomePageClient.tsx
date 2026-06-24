@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import TickerBar from "@/components/TickerBar";
 import Testimonials from "@/components/Testimonials";
-import LoginModal from "./LoginModal";
 
 interface Stats {
   users: number;
@@ -13,8 +11,6 @@ interface Stats {
 }
 
 export default function HomePageClient({ stats }: { stats: Stats }) {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-
   return (
     <div className="min-h-screen" style={{backgroundColor:"#FFFFFF"}}>
       {/* ── NAVBAR ── */}
@@ -29,15 +25,14 @@ export default function HomePageClient({ stats }: { stats: Stats }) {
           <Link href="/courses" className="hover:text-gray-900 transition-colors">Yo'nalishlar</Link>
           <Link href="#roadmap" className="hover:text-gray-900 transition-colors">Yo'l xaritasi</Link>
           <Link href="#reviews" className="hover:text-gray-900 transition-colors">Sharhlar</Link>
-          <Link href="#faq" className="hover:text-gray-900 transition-colors">Tez-tez so'raladi</Link>
         </nav>
-        <button 
-          onClick={() => setIsLoginModalOpen(true)}
+        <Link
+          href="/login"
           className="text-white px-5 py-2 rounded-full text-sm font-medium transition-colors"
           style={{backgroundColor:"#0F172A"}}
         >
           Kirish
-        </button>
+        </Link>
       </header>
 
       {/* ── HERO SPLIT ── */}
@@ -63,13 +58,13 @@ export default function HomePageClient({ stats }: { stats: Stats }) {
             </div>
           </div>
           <div className="flex items-center gap-3 mb-10">
-            <button 
-              onClick={() => setIsLoginModalOpen(true)}
+            <Link
+              href="/login"
               className="text-white px-6 py-3 rounded-full font-semibold transition-colors"
               style={{backgroundColor:"#0F172A"}}
             >
               Akademiyaga kirish →
-            </button>
+            </Link>
             <Link href="/courses" className="px-6 py-3 rounded-full font-semibold transition-colors" style={{border:"1.5px solid #CBD5E1", color:"#475569"}}>
               Yo'nalishlar
             </Link>
@@ -339,9 +334,6 @@ export default function HomePageClient({ stats }: { stats: Stats }) {
           <p className="text-xs" style={{color:"#94A3B8"}}>Toshkent · O'zbekiston</p>
         </div>
       </footer>
-
-      {/* Login Modal */}
-      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </div>
   );
 }
