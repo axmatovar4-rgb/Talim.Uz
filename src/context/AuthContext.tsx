@@ -42,8 +42,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error);
     setUser(data.user);
-    // O'qituvchi → dashboard, talaba → yo'nalish tanlash
-    router.push(data.user.role === "teacher" ? "/dashboard/teacher" : "/onboarding");
+    if (data.user.role === "teacher") {
+      router.push("/dashboard/teacher");
+    } else if (data.user.role === "admin") {
+      router.push("/dashboard/teacher");
+    } else {
+      // Talaba: allaqachon kurs tanlagan bo'lsa dashboard ga, aks holda onboarding
+      const dash = await fetch("/api/dashboard/student");
+      const dashData = await dash.json();
+      const hasEnrollment = dashData.enrollments && dashData.enrollments.length > 0;
+      router.push(hasEnrollment ? "/dashboard/student" : "/onboarding");
+    }
   }
 
   async function register(name: string, email: string, password: string, role: string) {
@@ -55,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error);
     setUser(data.user);
-    // O'qituvchi → dashboard, talaba → yo'nalish tanlash
+    // Yangi ro'yxatdan o'tganlar: teacher → dashboard, student → onboarding
     router.push(data.user.role === "teacher" ? "/dashboard/teacher" : "/onboarding");
   }
 

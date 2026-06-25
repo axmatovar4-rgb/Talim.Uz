@@ -36,8 +36,17 @@ export default function OnboardingPage() {
   }, [user, loading]);
 
   useEffect(() => {
+    if (!user) return;
+    // Allaqachon kurs tanlagan bo'lsa dashboard ga yo'naltir
+    fetch("/api/dashboard/student")
+      .then(r => r.json())
+      .then(d => {
+        if (d.enrollments && d.enrollments.length > 0) {
+          router.push("/dashboard/student");
+        }
+      });
     fetch("/api/courses").then(r => r.json()).then(setCourses);
-  }, []);
+  }, [user]);
 
   const selectedCourse = courses.find(c => c.id === selected);
 
