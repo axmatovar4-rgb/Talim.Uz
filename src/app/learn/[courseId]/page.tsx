@@ -104,11 +104,11 @@ export default function LearnPage({ params }: { params: Promise<{ courseId: stri
       {/* LEFT SIDEBAR */}
       <aside className="w-64 bg-white border-r border-gray-100 flex flex-col flex-shrink-0">
         <div className="px-5 py-4 border-b border-gray-100">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-black rounded-full flex items-center justify-center">
+          <Link href="/dashboard/student" className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: "#0F172A" }}>
               <span className="text-white text-xs font-bold">T</span>
             </div>
-            <span className="font-bold text-sm text-gray-900">Talim.Uz</span>
+            <span className="font-bold text-sm" style={{ color: "#0F172A" }}>Talim.Uz</span>
           </Link>
         </div>
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
@@ -164,8 +164,9 @@ export default function LearnPage({ params }: { params: Promise<{ courseId: stri
           <p className="text-xs text-gray-400 mt-1">{progressPct}% — {earnedCerts.length > 0 ? earnedCerts[earnedCerts.length-1].subtitle : "Yangi boshlovchi"}</p>
         </div>
         <button onClick={async () => { await fetch("/api/auth/logout",{method:"POST"}); router.push("/"); }}
-          className="mx-4 mb-4 flex items-center gap-2 text-xs text-gray-400 hover:text-gray-700 transition-colors">
-          <span>→</span> Chiqish
+          className="mx-4 mb-4 flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-xl transition-colors"
+          style={{ color: "#EF4444", backgroundColor: "#FEF2F2" }}>
+          <span>🚪</span> Chiqish
         </button>
       </aside>
 
