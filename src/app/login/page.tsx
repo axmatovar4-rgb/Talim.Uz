@@ -4,122 +4,93 @@ import { useState } from "react";
 import Link from "next/link";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
     setLoading(true);
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Email yoki parol noto'g'ri");
-        return;
-      }
 
-      const { user } = data;
+    const form = e.currentTarget;
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+    const password = (form.elements.namedItem("password") as HTMLInputElement).value;
 
-      // Teacher yoki admin → teacher dashboard
-      if (user.role === "teacher" || user.role === "admin") {
-        window.location.href = "/dashboard/teacher";
-        return;
-      }
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-      // Talaba: kurs tanlagan bo'lsa dashboard, aks holda onboarding
-      try {
-        const dash = await fetch("/api/dashboard/student");
-        const dashData = await dash.json();
-        if (dashData.enrollments && dashData.enrollments.length > 0) {
-          window.location.href = "/dashboard/student";
-        } else {
-          window.location.href = "/onboarding";
-        }
-      } catch {
-        window.location.href = "/onboarding";
-      }
-    } catch {
-      setError("Xato yuz berdi. Qayta urinib ko'ring.");
-    } finally {
-      setLoading(false);
+    const data = await res.json();
+    setLoading(false);
+
+    if (!res.ok) {
+      setError(data.error || "Email yoki parol noto'g'ri");
+      return;
+    }
+
+    // Sahifani to'liq yangilab yo'naltirish
+    if (data.user.role === "teacher" || data.user.role === "admin") {
+      window.location.replace("/dashboard/teacher");
+    } else {
+      window.location.replace("/dashboard/student");
     }
   }
 
   return (
-    <div className="min-h-[calc(100vh-56px)] flex items-center justify-center px-4 py-10"
-      style={{ backgroundColor: "#FAFAF7" }}>
-      <div className="w-full max-w-sm">
-        <div className="rounded-2xl p-8" style={{ backgroundColor: "white", border: "1.5px solid #E2E8F0" }}>
+    <div style={{ minHeight: "90vh", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#FAFAF7" }}>
+      <div style={{ width: "100%", maxWidth: 380, backgroundColor: "white", border: "1.5px solid #E2E8F0", borderRadius: 20, padding: 32 }}>
+        <div style={{ textAlign: "center", marginBottom: 28 }}>
+          <div style={{ width: 48, height: 48, backgroundColor: "#0F172A", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
+            <span style={{ color: "white", fontWeight: "bold", fontSize: 20 }}>T</span>
+          </div>
+          <h1 style={{ fontSize: 22, fontWeight: 800, color: "#0F172A", margin: 0 }}>Kirish</h1>
+          <p style={{ color: "#94A3B8", fontSize: 14, marginTop: 4 }}>Hisobingizga kiring</p>
+        </div>
 
-          <div className="text-center mb-8">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
-              style={{ backgroundColor: "#0F172A" }}>
-              <span className="text-white font-bold text-xl">T</span>
+        <form onSubmit={handleSubmit}>
+          {error && (
+            <div style={{ backgroundColor: "#FEF2F2", border: "1px solid #FECACA", color: "#DC2626", borderRadius: 12, padding: "10px 14px", fontSize: 13, marginBottom: 16 }}>
+              {error}
             </div>
-            <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>Kirish</h1>
-            <p className="text-sm mt-1" style={{ color: "#94A3B8" }}>Hisobingizga kiring</p>
+          )}
+
+          <div style={{ marginBottom: 14 }}>
+            <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#475569", marginBottom: 6 }}>Email</label>
+            <input
+              name="email"
+              type="text"
+              required
+              placeholder="email@example.com"
+              style={{ width: "100%", padding: "11px 14px", borderRadius: 12, border: "1.5px solid #E2E8F0", fontSize: 14, color: "#0F172A", outline: "none", boxSizing: "border-box" }}
+            />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="text-sm px-4 py-3 rounded-xl"
-                style={{ backgroundColor: "#FEF2F2", color: "#DC2626", border: "1px solid #FECACA" }}>
-                {error}
-              </div>
-            )}
+          <div style={{ marginBottom: 20 }}>
+            <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#475569", marginBottom: 6 }}>Parol</label>
+            <input
+              name="password"
+              type="password"
+              required
+              placeholder="••••••••"
+              style={{ width: "100%", padding: "11px 14px", borderRadius: 12, border: "1.5px solid #E2E8F0", fontSize: 14, color: "#0F172A", outline: "none", boxSizing: "border-box" }}
+            />
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1.5" style={{ color: "#475569" }}>Email</label>
-              <input
-                type="text"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-                placeholder="email@example.com"
-                autoComplete="email"
-                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none"
-                style={{ border: "1.5px solid #E2E8F0", color: "#0F172A", backgroundColor: "white" }}
-              />
-            </div>
+          <button
+            type="submit"
+            disabled={loading}
+            style={{ width: "100%", padding: "13px", backgroundColor: "#0F172A", color: "white", border: "none", borderRadius: 12, fontWeight: 700, fontSize: 15, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.6 : 1 }}
+          >
+            {loading ? "Kirish..." : "Kirish →"}
+          </button>
+        </form>
 
-            <div>
-              <label className="block text-sm font-medium mb-1.5" style={{ color: "#475569" }}>Parol</label>
-              <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-                placeholder="••••••••"
-                autoComplete="current-password"
-                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none"
-                style={{ border: "1.5px solid #E2E8F0", color: "#0F172A", backgroundColor: "white" }}
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 rounded-xl text-white font-semibold text-sm transition-colors disabled:opacity-50"
-              style={{ backgroundColor: "#0F172A" }}
-            >
-              {loading ? "Kirish..." : "Kirish →"}
-            </button>
-          </form>
-
-          <p className="text-center text-sm mt-6" style={{ color: "#94A3B8" }}>
-            Hisob yo'qmi?{" "}
-            <Link href="/register" className="font-medium" style={{ color: "#4F46E5" }}>
-              Ro'yxatdan o'tish
-            </Link>
-          </p>
-        </div>
+        <p style={{ textAlign: "center", fontSize: 13, color: "#94A3B8", marginTop: 20 }}>
+          Hisob yo'qmi?{" "}
+          <Link href="/register" style={{ color: "#4F46E5", fontWeight: 600 }}>Ro'yxatdan o'tish</Link>
+        </p>
       </div>
     </div>
   );
