@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
-  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,9 +14,39 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      await login(email, password);
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Email yoki parol noto'g'ri");
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Email yoki parol noto'g'ri");
+        return;
+      }
+
+      const { user } = data;
+
+      // Teacher yoki admin → teacher dashboard
+      if (user.role === "teacher" || user.role === "admin") {
+        window.location.href = "/dashboard/teacher";
+        return;
+      }
+
+      // Talaba: kurs tanlagan bo'lsa dashboard, aks holda onboarding
+      try {
+        const dash = await fetch("/api/dashboard/student");
+        const dashData = await dash.json();
+        if (dashData.enrollments && dashData.enrollments.length > 0) {
+          window.location.href = "/dashboard/student";
+        } else {
+          window.location.href = "/onboarding";
+        }
+      } catch {
+        window.location.href = "/onboarding";
+      }
+    } catch {
+      setError("Xato yuz berdi. Qayta urinib ko'ring.");
     } finally {
       setLoading(false);
     }
@@ -30,7 +58,6 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="rounded-2xl p-8" style={{ backgroundColor: "white", border: "1.5px solid #E2E8F0" }}>
 
-          {/* Logo */}
           <div className="text-center mb-8">
             <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
               style={{ backgroundColor: "#0F172A" }}>
@@ -40,10 +67,10 @@ export default function LoginPage() {
             <p className="text-sm mt-1" style={{ color: "#94A3B8" }}>Hisobingizga kiring</p>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="text-sm px-4 py-3 rounded-xl" style={{ backgroundColor: "#FEF2F2", color: "#DC2626", border: "1px solid #FECACA" }}>
+              <div className="text-sm px-4 py-3 rounded-xl"
+                style={{ backgroundColor: "#FEF2F2", color: "#DC2626", border: "1px solid #FECACA" }}>
                 {error}
               </div>
             )}
